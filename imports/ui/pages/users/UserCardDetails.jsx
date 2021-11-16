@@ -45,7 +45,6 @@ import Avatar from "@material-ui/core/Avatar";
 import { Link, useParams } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
-import {ServersCollection, VentasCollection,PreciosCollection} from "../collections/collections"
 //icons
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import AddCircleRoundedIcon from "@material-ui/icons/AddCircleRounded";
@@ -57,7 +56,6 @@ import SendIcon from "@material-ui/icons/Send";
 import DataUsageIcon from '@material-ui/icons/DataUsage';
 var dateFormat = require('dateformat');
 
-import { OnlineCollection, LogsCollection, RegisterDataUsersCollection } from "../collections/collections";
 import { Autocomplete } from "@material-ui/lab";
 
 const StyledBadge = withStyles((theme) => ({
@@ -201,23 +199,6 @@ export default function UserCardDetails() {
     return Meteor.users.findOne({ _id: useParams().id });
   });
 
-  const servers = useTracker(() => {
-    Meteor.subscribe("servers").ready()
-    let serv = []
-    ServersCollection.find({ active: true }).fetch().map((a)=>{
-      serv.push(a.ip)
-    })
-    return serv
-  });
-
-  const preciosList = useTracker(() => {
-    Meteor.subscribe("precios").ready()
-    let precioslist = []
-    PreciosCollection.find({ fecha: false }).fetch().map((a)=>{
-      precioslist.push({value: a.megas, label: a.megas+'MB • $'+ a.precio})
-    })
-    return precioslist
-  });
 
     const admins = useTracker(() => {
       Meteor.subscribe("user",{"profile.role":"admin"}).ready()
@@ -229,11 +210,7 @@ export default function UserCardDetails() {
 
     return admins ;
   });
-  const precios = useTracker(() => {
-    Meteor.subscribe("precios").ready()
-    
-  return PreciosCollection.find().fetch() ;
-});
+
   const usersOnline = useTracker(() => {
     Meteor.subscribe("conexionesUser", useParams().id);
     return Meteor.users.find({ userId: useParams().id }).count() > 0 ? true : false;
@@ -307,124 +284,8 @@ export default function UserCardDetails() {
       },
     });
   };
-  const handleReiniciarConsumo = (event) => {
-    users.megasGastadosinBytes >= 0 &&
-      RegisterDataUsersCollection.insert({
-        userId: users._id,
-        megasGastadosinBytes: users.megasGastadosinBytes,
-        megasGastadosinBytesGeneral: users.megasGastadosinBytesGeneral,
-      })
-    Meteor.users.update(users._id, {
-      $set: {
-        megasGastadosinBytes: 0,
-        megasGastadosinBytesGeneral : 0
-      },
-    });
-    LogsCollection.insert({
-      type: 'Reinicio',
-      userAfectado: users._id,
-      userAdmin: Meteor.userId(),
-      message:
-        `Ha sido Reiniciado el consumo de Datos por ${users.profile.firstName} ${users.profile.lastName}`,
-    });
-    alert('Se reinicio los datos de ' + users.profile.firstName)
-  };
-  const addVenta = () => {
-    // console.log(`Precio MEGAS ${precios}`);
-let validacion = false;
-
-    users.isIlimitado && (new Date() < new Date(users.fechaSubscripcion)) && (validacion = true)
-    users.isIlimitado || ((users.megasGastadosinBytes?(users.megasGastadosinBytes/ 1000000):0 ) < (users.megas?users.megas:0)) && (validacion = true)
-    
-    validacion || (
-      setMensaje("Revise los Límites del Usuario"),
-      handleClickOpen()
-)
-    // validacion = ((users.profile.role == "admin") ? true  : false);
-
-    users.profile.role == 'admin' ? (
-      (Meteor.users.update(users._id, {
-        $set: {
-          baneado: users.baneado ? false : true,
-          bloqueadoDesbloqueadoPor: Meteor.userId()
-        },
-      }),
-        LogsCollection.insert({
-          type: !users.baneado ? "Bloqueado" : "Desbloqueado",
-          userAfectado: users._id,
-          userAdmin: Meteor.userId(),
-          message:
-            "Ha sido " +
-            (!users.baneado ? "Bloqueado" : "Desbloqueado") +
-            " por un Admin",
-        }))
-    ) : (
-
-      users.baneado ||
-      (Meteor.users.update(users._id, {
-        $set: {
-          baneado: users.baneado ? false : true,
-          bloqueadoDesbloqueadoPor: Meteor.userId()
-        },
-      }),
-        LogsCollection.insert({
-          type: !users.baneado ? "Bloqueado" : "Desbloqueado",
-          userAfectado: users._id,
-          userAdmin: Meteor.userId(),
-          message:
-            "Ha sido " +
-            (!users.baneado ? "Bloqueado" : "Desbloqueado") +
-            " por un Admin",
-        })),
-
-      validacion && users.baneado && (
-        Meteor.users.update(users._id, {
-          $set: {
-            baneado: users.baneado ? false : true,
-            bloqueadoDesbloqueadoPor: Meteor.userId()
-          },
-        }),
-        LogsCollection.insert({
-          type: !users.baneado ? "Bloqueado" : "Desbloqueado",
-          userAfectado: users._id,
-          userAdmin: Meteor.userId(),
-          message:
-            "Ha sido " +
-            (!users.baneado ? "Bloqueado" : "Desbloqueado") +
-            " por un Admin",
-        }),
-        precios.map(precio => {
-
-          users.isIlimitado && precio.fecha && (VentasCollection.insert({
-            adminId: Meteor.userId(),
-            userId: users._id,
-            precio: precio.precio,
-            comentario: precio.comentario
-          }),
-            setMensaje(precio.comentario),
-            handleClickOpen()
-          ),
-
-            // console.log("Precio MEGAS " + precio.megas);
-            // console.log("User MEGAS " + users.megas);
-            users.isIlimitado || (precio.megas == users.megas) && (
-              VentasCollection.insert({
-                adminId: Meteor.userId(),
-                userId: users._id,
-                precio: precio.precio,
-                comentario: precio.comentario
-              }),
-              setMensaje(precio.comentario),
-              handleClickOpen()
-            )
-        }))
-    )
-
-
-  }
-  const handleChangebaneado = (event) => {
-  addVenta();
-  };
+ 
+ 
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -842,41 +703,7 @@ let validacion = false;
                                   }
                               
                               <Grid item xs={12} sm={4}>
-                            <FormControl fullWidth>
-                              {/* <InputLabel id="demo-simple-select-autowidth-label">Age</InputLabel> */}
-                              <Autocomplete
-                                fullWidth
-                                value={users.megas&&PreciosCollection.findOne({ fecha: false, megas: users.megas })?{ value: users.megas, label: (users.megas + 'MB • $' + (PreciosCollection.findOne({ fecha: false, megas: users.megas }).precio&&PreciosCollection.findOne({ fecha: false, megas: users.megas }).precio)) }:""}
-                                onChange={(event, newValue) => {
-                                  Meteor.users.update(users._id, {
-                                    $set: { megas: newValue.value },
-                                  });
-                                  LogsCollection.insert({
-                                    type: 'Megas',
-                                    userAfectado: users._id,
-                                    userAdmin: Meteor.userId(),
-                                    message:
-                                      `Ha sido Cambiado el consumo de Datos a: ${newValue.value}MB`,
-                                  });
-                                  // setIP(newValue);
-                                }}
-                                inputValue={searchPrecio}
-                                className={classes.margin}
-                                onInputChange={(event, newInputValue) => {
-                                  setSearchPrecio(newInputValue);
-                                }}
-                                id="controllable-states-demo"
-                                options={preciosList}
-                                getOptionLabel= {(option) => option.label}
-                                renderInput={(params) => (
-                                  <TextField
-                                    {...params}
-                                    label="Precios"
-                                    variant="outlined"
-                                  />
-                                )}
-                              />
-                            </FormControl>
+                           
                             
                           </Grid>
                               </>
@@ -942,35 +769,7 @@ let validacion = false;
                           <h3>
                             Conectarse por el Server:
                           </h3>
-                          <Grid item xs={12} sm={4}>
-                            <FormControl fullWidth>
-                              {/* <InputLabel id="demo-simple-select-autowidth-label">Age</InputLabel> */}
-                              <Autocomplete
-                                fullWidth
-                                value={users.ip ? users.ip : ""}
-                                onChange={(event, newValue) => {
-                                  Meteor.users.update(users._id, {
-                                    $set: { ip: newValue },
-                                  });
-                                  // setIP(newValue);
-                                }}
-                                inputValue={searchIP}
-                                className={classes.margin}
-                                onInputChange={(event, newInputValue) => {
-                                  setSearchIP(newInputValue);
-                                }}
-                                id="controllable-states-demo"
-                                options={servers}
-                                renderInput={(params) => (
-                                  <TextField
-                                    {...params}
-                                    label="Server Activo"
-                                    variant="outlined"
-                                  />
-                                )}
-                              />
-                            </FormControl>
-                          </Grid>
+                          
                           {Meteor.user().username == users.username || users.username == 'carlosmbinf' ||
                           <>
                           <Divider className={classes.padding10} />
@@ -1136,61 +935,8 @@ let validacion = false;
                           {edit ? "Cancelar Edición" : "Editar"}
                         </Button>
                       </Grid>
-                      {edit ? (
-                        <>
-                          <Grid
-                            item
-                            xs={12}
-                            sm={4}
-                            style={{ textAlign: "center", padding:3}}
-                          >
-                            <Grid container>
-                              <Grid
-                                item
-                                xs={12}
-                                lg={5}
-                                style={{ textAlign: "center" , padding:3 }}
-                              >
-                                <Tooltip
-                                  title={
-                                    users.baneado
-                                      ? "Desbloquear al Usuario"
-                                      : "Bloquear al Usuario"
-                                  }
-                                >
-                                  <Button
-                                    onClick={handleChangebaneado}
-                                    variant="contained"
-                                    color={
-                                      users.baneado ? "secondary" : "primary"
-                                    }
-                                  >
-                                    {users.baneado ? "Desbloquear" : "Bloquear"}
-                                  </Button>
-                                </Tooltip>
-                              </Grid>
-                              <Grid
-                                item
-                                xs={12}
-                                lg={7}
-                                style={{ textAlign: "center", padding:3 }}
-                              >
-                                <Button
-                                  disabled={users.megasGastadosinBytes == 0}
-                                  onClick={handleReiniciarConsumo}
-                                  variant="contained"
-                                  color={"secondary"}
-                                >
-                                  {users.megasGastadosinBytes == 0
-                                    ? "Sin Consumo/Datos"
-                                    : "Reiniciar Consumo/Datos"}
-                                </Button>
-                              </Grid>
-                            </Grid>
-                          </Grid>
-                        </>
-                      ) : (
-                        Meteor.user().username == "carlosmbinf" && (
+                      
+                        {Meteor.user().profile.role == "admin" && (
                           <Grid
                             item
                             xs={12}
@@ -1212,8 +958,7 @@ let validacion = false;
                               />
                             </Tooltip>
                           </Grid>
-                        )
-                      )}
+                        )}
                     </Grid>
                   </Grid>
                 ) : users._id == Meteor.userId() ? (

@@ -14,7 +14,6 @@ import Avatar from "@material-ui/core/Avatar";
 import { Link } from "react-router-dom";
 import Fade from 'react-reveal/Fade';
 import Carousel from "../../components/carousel/Carousel";
-import {VentasCollection} from "../collections/collections";
 //icons
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import AddCircleRoundedIcon from "@material-ui/icons/AddCircleRounded";
@@ -139,10 +138,6 @@ export default function UserCard(withAdd) {
     Meteor.user().username=="carlosmbinf" &&  Meteor.subscribe("user",{"profile.role":"admin"});
     let usuarios = Meteor.user().username == "carlosmbinf" ? Meteor.users.find({ "profile.role": "admin" }, { fields: {} }).fetch() : Meteor.users.find(Meteor.userId(), { fields: {} }).fetch();
     return usuarios
-  });
-  const ventas = useTracker(() => {
-    Meteor.subscribe("ventas")
-    return VentasCollection.find({}).fetch()
   });
 
   const gastos = (id) => {

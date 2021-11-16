@@ -17,11 +17,6 @@ import Slide from "@material-ui/core/Slide";
 import { Link, useParams } from "react-router-dom";
 import Rotate from 'react-reveal/Rotate';
 
-//Collections
-import {
-  DescargasCollection,
-} from "../collections/collections";
-
 //icons
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import AddCircleRoundedIcon from "@material-ui/icons/AddCircleRounded";

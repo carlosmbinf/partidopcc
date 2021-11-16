@@ -46,7 +46,6 @@ import {
 import GraphicsPieChart from "./GraphicsPieChart";
 import GraphicsLinealMensualVentasyDeudas from "./GraphicsLinealMensualVentasyDeudas";
 import GraphicsLinealTotalVentasyDeudas from "./GraphicsLinealTotalVentasyDeudas";
-import { VentasCollection } from "../collections/collections";
 
 import moment from 'moment';
 
@@ -215,10 +214,7 @@ export default function DashboardInit() {
     { name: "Group F", value: 4800 },
   ];
 
-  const ventas = useTracker(() => {
-    Meteor.subscribe("ventas")
-    return VentasCollection.find({}).fetch()
-  });
+  
 
   const gastos = (id, mensual) =>{
     let dateStartMonth = moment(new Date())

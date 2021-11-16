@@ -46,7 +46,6 @@ import BlockIcon from '@material-ui/icons/Block';
 
 //Collections
 import {
-  DescargasCollection,
   LogsCollection,
   OnlineCollection,
 } from "../collections/collections";

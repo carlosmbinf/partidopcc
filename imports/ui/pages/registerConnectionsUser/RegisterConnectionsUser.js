@@ -46,10 +46,7 @@ import BlockIcon from '@material-ui/icons/Block';
 
 //Collections
 import {
-  DescargasCollection,
-  LogsCollection,
   OnlineCollection,
-  RegisterDataUsersCollection,
 } from "../collections/collections";
 import { useHistory } from "react-router-dom";
 import StateServers from "../servers/StateServers";

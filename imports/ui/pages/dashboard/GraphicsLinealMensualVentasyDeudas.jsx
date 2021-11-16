@@ -45,7 +45,6 @@ import {
   PieChart,
   Pie,
 } from "recharts";
-import { VentasCollection } from "../collections/collections";
 const StyledBadge = withStyles((theme) => ({
   badge: {
     backgroundColor: "#44b700",
@@ -197,10 +196,6 @@ export default function GraphicsLinealMensualVentasyDeudas() {
       amt: 1700,
     },
   ];
-  const ventas = useTracker(() => {
-    Meteor.subscribe("ventas")
-    return VentasCollection.find({}).fetch()
-  });
 
   const gastos = (id,fechaStart, fechaEnd) =>{
       let totalAPagar = 0;
