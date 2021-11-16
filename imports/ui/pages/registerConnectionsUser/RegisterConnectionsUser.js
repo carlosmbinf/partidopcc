@@ -49,7 +49,7 @@ import {
   OnlineCollection,
 } from "../collections/collections";
 import { useHistory } from "react-router-dom";
-import StateServers from "../servers/StateServers";
+
 
 const StyledBadge = withStyles((theme) => ({
   badge: {
@@ -201,10 +201,7 @@ export default function RegisterConnectionsUser() {
 
   return (
     <>
-      {Meteor.user().username == "carlosmbinf" &&
-        <StateServers />
-      }
-
+      
       <Grid item style={{ textAlign: "center" }}>
         <h1>CONEXIONES</h1>
       </Grid>

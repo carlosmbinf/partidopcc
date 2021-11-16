@@ -126,8 +126,7 @@ export default function UsersTable(option) {
   const [open, setOpen] = React.useState(true);
   const [selectedOnline, setSelectedOnline] = React.useState(null);
   const [selectedRole, setSelectedRole] = React.useState(null);
-  const [selectedLimites, setSelectedLimites] = React.useState(null);
-  const [selectedConProxy, setSelectedConProxy] = React.useState(null);
+
   const dt = React.useRef(null);
   const history = useHistory();
 
@@ -137,8 +136,7 @@ export default function UsersTable(option) {
   // });
   const statuses = ["ONLINE", "DISCONECTED"];
   const statusesRole = ["admin", "user"];
-  const statusesLimites = ["Ilimitado", "Megas", "Fecha"];
-  const statusesConProxy = ["true", "false"];
+
   const onStatusChange = (e) => {
     dt.current.filter(e.value, "online", "equals");
     setSelectedOnline(e.value);
@@ -147,14 +145,7 @@ export default function UsersTable(option) {
     dt.current.filter(e.value, "role", "equals");
     setSelectedRole(e.value);
   };
-  const onLimitesChange = (e) => {
-    dt.current.filter(e.value, "limites", "equals");
-    setSelectedLimites(e.value);
-  };
-  const onConProxyChange = (e) => {
-    dt.current.filter(e.value, "conProxy", "equals");
-    setSelectedConProxy(e.value);
-  };
+
   const onlineItemTemplate = (option) => {
     return <span className={`customer-badge`}><Chip onClick={() => { }} color="primary" label={option} /></span>;
     // ;
@@ -163,14 +154,7 @@ export default function UsersTable(option) {
     return <span className={`customer-badge`}><Chip onClick={() => { }} color="primary" label={option} /></span>;
     // ;
   };
-  const limitesItemTemplate = (option) => {
-    return <span className={`customer-badge`}><Chip onClick={() => { }} color="primary" label={option} /></span>;
-    // ;
-  };
-  const conProxyItemTemplate = (option) => {
-    return <span className={`customer-badge`}><Chip onClick={() => { }} color="primary" label={option} /></span>;
-    // ;
-  };
+
   const onlineFilter = (
     <Dropdown
       value={selectedOnline}
@@ -193,28 +177,7 @@ export default function UsersTable(option) {
       showClear
     />
   );
-  const limitesFilter = (
-    <Dropdown
-      value={selectedLimites}
-      options={statusesLimites}
-      onChange={onLimitesChange}
-      itemTemplate={limitesItemTemplate}
-      placeholder="Select a Limit"
-      className="p-column-filter"
-      showClear
-    />
-  );
-  const conProxyFilter = (
-    <Dropdown
-      value={selectedConProxy}
-      options={statusesConProxy}
-      onChange={onConProxyChange}
-      itemTemplate={conProxyItemTemplate}
-      placeholder="Select"
-      className="p-column-filter"
-      showClear
-    />
-  );
+ 
   const usersRegister = useTracker(() => {
     Meteor.subscribe("user");
     Meteor.subscribe("conexiones");
@@ -250,19 +213,8 @@ export default function UsersTable(option) {
               ? "ONLINE"
               : "DISCONECTED",
           username: data.username,
-          creadoPor: data.creadoPor=='Server'?"Server":(data.creadoPor?(`${Meteor.users.findOne(data.creadoPor)&&Meteor.users.findOne(data.creadoPor).profile.firstName} ${Meteor.users.findOne(data.creadoPor)&&Meteor.users.findOne(data.creadoPor).profile.lastName}`):"Facebook"),
-          administradoPor: data.bloqueadoDesbloqueadoPor?(Meteor.users.findOne(data.bloqueadoDesbloqueadoPor)?(`${Meteor.users.findOne(data.bloqueadoDesbloqueadoPor)&&Meteor.users.findOne(data.bloqueadoDesbloqueadoPor).profile.firstName} ${Meteor.users.findOne(data.bloqueadoDesbloqueadoPor)&&Meteor.users.findOne(data.bloqueadoDesbloqueadoPor).profile.lastName}`):"Carlos Medina"):"Carlos Medina",
-          conProxy: !data.baneado,
-          megasGastadosinBytes: data.megasGastadosinBytes,
-          megasGastadosinBytesGeneral: data.megasGastadosinBytesGeneral,
-          connectionsCounts: OnlineCollection.find({ userId: data._id }).count(),
-          limites: data.profile.role == 'admin' ? 'Ilimitado' : (data.isIlimitado ? "Fecha" : "Megas"),
-          limiteData: data.profile.role == 'admin' ? 'Ilimitado' : (data.isIlimitado ? (data.fechaSubscripcion ? (dateFormat(
-            new Date(data.fechaSubscripcion),
-            "yyyy-mm-dd",
-            true,
-            true
-          )) : 'N/A') : (data.megas ? `${data.megas} MB` : 'N/A'))
+          creadoPor: data.creadoPor=='Server'?"Server":(data.creadoPor?(`${Meteor.users.findOne(data.creadoPor)&&Meteor.users.findOne(data.creadoPor).profile.firstName} ${Meteor.users.findOne(data.creadoPor)&&Meteor.users.findOne(data.creadoPor).profile.lastName}`):"Facebook")
+          
         })
     );
 
@@ -275,22 +227,7 @@ export default function UsersTable(option) {
   const paginatorRight = (
     <Button type="button" icon="pi pi-cloud" className="p-button-text" />
   );
-  const connectionsCountsBodyTemplate = (rowData) => {
-    return (
-      <React.Fragment>
-        <span className="p-column-title">Conexiones</span>
-        {rowData.connectionsCounts}
-      </React.Fragment>
-    );
-  };
-  const limiteDataBodyTemplate = (rowData) => {
-    return (
-      <React.Fragment>
-        <span className="p-column-title">Datos del Límite</span>
-        {rowData.limiteData}
-      </React.Fragment>
-    );
-  };
+  
   const iDBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
@@ -299,22 +236,7 @@ export default function UsersTable(option) {
       </React.Fragment>
     );
   };
-  const limitesBodyTemplate = (rowData) => {
-    return (
-      <React.Fragment>
-        <span className="p-column-title">Tipo de Limite</span>
-        <Chip color="primary" label={rowData.limites} />
-      </React.Fragment>
-    );
-  };
-  const limiteBodyTemplate = (rowData) => {
-    return (
-      <React.Fragment>
-        <span className="p-column-title">Tipo de Limite</span>
-        <Chip color="primary" label={rowData.limite} />
-      </React.Fragment>
-    );
-  };
+  
   const nombreBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
@@ -331,14 +253,7 @@ export default function UsersTable(option) {
       </React.Fragment>
     );
   };
-  const apellidoBodyTemplate = (rowData) => {
-    return (
-      <React.Fragment>
-        <span className="p-column-title">Apellido</span>
-        {rowData.lastName}
-      </React.Fragment>
-    );
-  };
+ 
   const emailBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
@@ -355,14 +270,7 @@ export default function UsersTable(option) {
       </React.Fragment>
     );
   };
-  const administradoPorTemplate = (rowData) => {
-    return (
-      <React.Fragment>
-        <span className="p-column-title">Administrado por:</span>
-        {rowData.administradoPor}
-      </React.Fragment>
-    );
-  };
+ 
   const roleBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
@@ -382,35 +290,7 @@ export default function UsersTable(option) {
       </React.Fragment>
     );
   };
-  const conProxyBodyTemplate = (rowData) => {
-    return (
-      <React.Fragment>
-        <span className="p-column-title">Con Proxy</span>
-        <Chip color={rowData.conProxy ? "primary" : "secondary"} label={rowData.conProxy ? <CheckIcon /> : <BlockIcon />} />
-      </React.Fragment>
-    );
-  };
-  const megasGastadosinBytesTemplate = (rowData) => {
-    return (
-      <React.Fragment>
-        <span className="p-column-title">Megas Gastados por el Cliente</span>
-        {rowData.megasGastadosinBytes
-          ? Number.parseFloat(rowData.megasGastadosinBytes / 1000000).toFixed(2) + ' MB'
-          : "0"}
-      </React.Fragment>
-    );
-  };
-  const megasGastadosinBytesGeneralTemplate = (rowData) => {
-    return (
-      <React.Fragment>
-        <span className="p-column-title">Megas Gastados en el Servidor</span>
-        {rowData.megasGastadosinBytesGeneral
-          ? Number.parseFloat(rowData.megasGastadosinBytesGeneral / 1000000).toFixed(2) + ' MB'
-          : "0"}
-      </React.Fragment>
-    );
-  };
-
+  
 
   const eliminarUser = (id) => {
     Meteor.users.remove(id);
@@ -517,7 +397,7 @@ export default function UsersTable(option) {
                 // resizableColumns={true}
               >
                 <Column field="img" header="IMG" body={thumbnailBodyTemplate} />
-                {/* <Column
+                <Column
                   field="id"
                   body={iDBodyTemplate}
                   wrap="nowrap"
@@ -525,7 +405,7 @@ export default function UsersTable(option) {
                   filter
                   filterPlaceholder="ID"
                   filterMatchMode="contains"
-                /> */}
+                />
                 <Column
                   field="name"
                   header="Nombre"
@@ -534,14 +414,6 @@ export default function UsersTable(option) {
                   filterPlaceholder="Nombre y Apellidos"
                   filterMatchMode="contains"
                 />
-                {/* <Column
-                  field="email"
-                  header="Correo"
-                  body={emailBodyTemplate}
-                  filter
-                  filterPlaceholder="Correo"
-                  filterMatchMode="contains"
-                /> */}
                 <Column
                   field="username"
                   header="UserName"
@@ -558,16 +430,6 @@ export default function UsersTable(option) {
                   filterPlaceholder="Creado Por:"
                   filterMatchMode="contains"
                 />
-                {Meteor.user().username == "carlosmbinf" && (
-                <Column
-                  field="administradoPor"
-                  header="Administrado Por"
-                  body={administradoPorTemplate}
-                  filter
-                  filterPlaceholder="Creado Por:"
-                  filterMatchMode="contains"
-                />
-                )}
                 <Column
                   field="online"
                   header="ONLINE"
@@ -582,47 +444,7 @@ export default function UsersTable(option) {
                   filter
                   filterElement={roleFilter}
                 />
-                <Column
-                  field="conProxy"
-                  header="Proxy"
-                  body={conProxyBodyTemplate}
-                  filter
-                  filterElement={conProxyFilter}
-                />
-                <Column
-                  field="limites"
-                  header="Tipo de Limite"
-                  body={limitesBodyTemplate}
-                  filter
-                  filterElement={limitesFilter}
-                />
-                <Column
-                  field="megasGastadosinBytes"
-                  header="Megas x Cliente"
-                  body={megasGastadosinBytesTemplate}
-                  reorderable={true}
-                />
-                {/* <Column
-                field="megasGastadosinBytesGeneral"
-                header="Megas x Server"
-                body={megasGastadosinBytesGeneralTemplate}
-                reorderable={true}
-              /> */}
-                <Column
-                  field="connectionsCounts"
-                  header="Conexiones"
-                  body={connectionsCountsBodyTemplate}
-                  reorderable={true}
-                />
-                <Column
-                  field="limiteData"
-                  header="Datos del Límite"
-                  body={limiteDataBodyTemplate}
-                  reorderable={true}
-                  filter
-                  filterPlaceholder="Search"
-                  filterMatchMode="contains"
-                />
+                
                 <Column field="urlReal" header="" body={urlBodyTemplate} />
 
                 {Meteor.user().username == "carlosmbinf" && (

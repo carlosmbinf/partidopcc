@@ -140,13 +140,6 @@ export default function UserCard(withAdd) {
     return usuarios
   });
 
-  const gastos = (id) => {
-    let totalAPagar = 0;
-    ventas.map(element => {
-      element.adminId == id && !element.cobrado && (totalAPagar += element.precio)
-    })
-    return totalAPagar
-  };
 
   const items = users.map((usersGeneral, i) => {
     
@@ -208,8 +201,7 @@ export default function UserCard(withAdd) {
                           <DataSaverOnIcon />
                         <Typography color="textSecondary" noWrap>
                           <strong>
-                            {usersGeneral.megasGastadosinBytes ?
-                              (usersGeneral.megasGastadosinBytes/1000000).toFixed(2) : 0} MB
+                            {usersGeneral.emails[0].address}
                           </strong>
                         </Typography>
                         </Grid>                        
@@ -221,7 +213,7 @@ export default function UserCard(withAdd) {
                       
                       <Grid container direction="row" justify="center">
                         <Typography
-                          variant="h5"
+                          variant="h6"
                           // color={
                           //   usersGeneral.profile.role == "admin"
                           //     ? "secondary"
@@ -229,7 +221,7 @@ export default function UserCard(withAdd) {
                           // }
                         >
                           {/* <PermContactCalendarRoundedIcon />{" "} */}
-                          ${gastos(usersGeneral._id)}
+                          {usersGeneral.username}
                         </Typography>
                       </Grid>
                       <Divider  />

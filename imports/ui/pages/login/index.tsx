@@ -3,7 +3,7 @@ import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import LoginForm from "../../components/login/LoginForm";
 import { Grid, Typography, Link, ThemeProvider} from "@material-ui/core";
 import Fade from 'react-reveal/Fade';
-import { theme } from "../../../startup/client/theme";
+import { theme } from "../../../startup/theme";
 import {
   BrowserRouter as Router,
   Route,

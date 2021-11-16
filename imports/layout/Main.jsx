@@ -27,7 +27,6 @@ import UserCardDetails from "../ui/pages/users/UserCardDetails";
 import CreateUsers from "../ui/pages/users/CreateUsers";
 import { Grid, Zoom } from "@material-ui/core";
 import LogsTable from "../ui/pages/logs/LogsTable";
-import RegisterDataUserTable from "../ui/pages/registerDataUser/RegisterDataUser";
 import RegisterConnectionsUser from "../ui/pages/registerConnectionsUser/RegisterConnectionsUser";
 import ExportDataToMongoDB from "../ui/pages/exportData/exportDataToMongoDB";
 import Chats from "../ui/pages/chats/Chats";
@@ -97,11 +96,6 @@ export default function Main() {
             <UserCardDetails />
             <Zoom in={true}>
               <>
-                <Grid container style={{ textAlign: "center", marginTop: 100 }}>
-                  <Grid item>
-                    <RegisterDataUserTable />
-                  </Grid>
-                </Grid>
                 {useractual &&
                   useractual.profile &&
                   useractual.profile.role == "admin" && (
