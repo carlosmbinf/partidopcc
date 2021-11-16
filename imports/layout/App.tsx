@@ -271,27 +271,29 @@ export default function PersistentDrawerLeft() {
     // },
     
     { title: "USUARIOS", icon: <GroupIcon />, url: "users" },
-    // {title: "calendar",
-    //   icon: <InboxIcon />,
-    // },
+    {
+      title: "ARCHIVOS",
+      icon: <InboxIcon />,
+      url: "archivo" 
+    },
     // {title: "login",
     //   icon: <InboxIcon />,
     // },
     // {title: "create-user",
     //   icon: <InboxIcon />,
     // },
-    { title: "Television en VIVO", icon: <LiveTvIcon />, url: "tv" },
-    { title: "Peliculas", icon: <MovieFilterIcon />, url: "pelis" },
+    // { title: "Television en VIVO", icon: <LiveTvIcon />, url: "tv" },
+    // { title: "Peliculas", icon: <MovieFilterIcon />, url: "pelis" },
     // {title: "create-pelis",
     //   icon: <InboxIcon />,
     // },
-    { title: "Servers", icon: <MovieFilterIcon />, url: "servers" },
-    { title: "Descargas Youtube", icon: <CloudDownloadIcon />, url: "downloads" },
+    // { title: "Servers", icon: <MovieFilterIcon />, url: "servers" },
+    // { title: "Descargas Youtube", icon: <CloudDownloadIcon />, url: "downloads" },
     { title: "Registro de Logs", icon: <DashboardIcon />, url: "logs" },
-    { title: "Registro de MB Consumidos", icon: <DashboardIcon />, url: "register-data" },
+    // { title: "Registro de MB Consumidos", icon: <DashboardIcon />, url: "register-data" },
     { title: "Registro de Conexiones", icon: <DashboardIcon />, url: "connections" },
-    { title: "Precios", icon: <DashboardIcon />, url: "precios" },
-    { title: "Ventas", icon: <DashboardIcon />, url: "ventas" },
+    // { title: "Precios", icon: <DashboardIcon />, url: "precios" },
+    // { title: "Ventas", icon: <DashboardIcon />, url: "ventas" },
     { title: "Chats", icon: <DashboardIcon />, url: "chat" },
     
     { title: "Export Data to MongoDB Server", icon: <ImportExportIcon />, url: "exportdata" },
@@ -496,7 +498,7 @@ export default function PersistentDrawerLeft() {
                 </Typography>
                   </ListItem>
                 </Link>
-              ) : text.url !== "dashboard" && text.url !== "chat" && text.url !== "ventas" && text.url !== "precios" && text.url !== "users" && text.url !== "logs" && text.url !== "connections" && text.url !== "exportdata" && text.url !== "register-data" && text.url !== "servers" ? (
+              ) : text.url !== "dashboard" && text.url !== "chat" && text.url !== "users" && text.url !== "logs" && text.url !== "connections" && text.url !== "exportdata" ? (
                 <Link key={index} to={"/" + text.url} className={classes.link}>
                   <ListItem button className={classes.item}>
                     <ListItemIcon color="primary">

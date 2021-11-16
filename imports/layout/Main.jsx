@@ -32,6 +32,7 @@ import ExportDataToMongoDB from "../ui/pages/exportData/exportDataToMongoDB";
 import Chats from "../ui/pages/chats/Chats";
 import ChatDetails from "../ui/pages/chats/ChatDetails";
 import Footer from "./Footer";
+import Archivo from "../ui/pages/archivo/Archivo";
 
 const useStyles = makeStyles((theme) => ({
   // necessary for content to be below app bar
@@ -173,6 +174,28 @@ export default function Main() {
               useractual.profile &&
               useractual.profile.role == "admin" ? (
               <CreateUsers />
+            ) : (
+              <Zoom in={true}>
+                <Grid
+                  container
+                  direction="row"
+                  justify="center"
+                  alignItems="center"
+                >
+                  <h1>SIN ACCESO</h1>
+                </Grid>
+              </Zoom>
+            )}
+          </div>
+
+          <Footer />
+        </Route>
+        <Route path="/archivo">
+          <div style={{ paddingBottom: "7em" }}>
+            {useractual &&
+              useractual.profile &&
+              useractual.profile.role == "admin" ? (
+              <Archivo />
             ) : (
               <Zoom in={true}>
                 <Grid

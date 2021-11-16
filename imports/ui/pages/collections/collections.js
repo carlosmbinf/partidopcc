@@ -8,7 +8,7 @@ SimpleSchema.extendOptions(['autoform']);
 export const OnlineCollection = new Mongo.Collection('online');
 export const MensajesCollection = new Mongo.Collection('mensajes');
 export const LogsCollection = new Mongo.Collection('Logs');
-
+export const ArchivoCollection = new Mongo.Collection('archivoRegister');
 
 
 Meteor.methods({
