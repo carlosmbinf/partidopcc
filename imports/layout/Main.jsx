@@ -33,6 +33,7 @@ import Chats from "../ui/pages/chats/Chats";
 import ChatDetails from "../ui/pages/chats/ChatDetails";
 import Footer from "./Footer";
 import Archivo from "../ui/pages/archivo/Archivo";
+import CreateArchivo from "../ui/pages/archivo/CreateArchivo";
 
 const useStyles = makeStyles((theme) => ({
   // necessary for content to be below app bar
@@ -195,7 +196,11 @@ export default function Main() {
             {useractual &&
               useractual.profile &&
               useractual.profile.role == "admin" ? (
-              <Archivo />
+                <>
+                <CreateArchivo/>
+                <Archivo />
+                </>
+              
             ) : (
               <Zoom in={true}>
                 <Grid
