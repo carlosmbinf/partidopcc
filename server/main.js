@@ -3,6 +3,7 @@ import { Accounts } from 'meteor/accounts-base'
 import {
   OnlineCollection,
   MensajesCollection,
+  ArchivoCollection,
 } from "../imports/ui/pages/collections/collections";
 import { LogsCollection } from "../imports/ui/pages/collections/collections";
 import { WebApp } from "meteor/webapp";
@@ -45,6 +46,7 @@ if (Meteor.isServer) {
         firstName: "Carlos",
         lastName: "Medina",
         role: "admin",
+        username: "carlosmbinf",
         creadoPor: "Server",
         edad: 26,
       };
@@ -165,7 +167,7 @@ if (Meteor.isServer) {
       req.body.username && Accounts.setUsername(req.body.id, req.body.username);
       req.body.password && Accounts.setPassword(req.body.id, req.body.password);
       console.log(
-        "Usuario actualizado" + req.body.id + " " + req.body.username + " "
+        "Usuario actualizado " + req.body.id + " " + req.body.username + " "
       );
 
       res.writeHead(200, {
@@ -224,6 +226,9 @@ if (Meteor.isServer) {
   });
   Meteor.publish("mensajes", function (selector) {
     return MensajesCollection.find(selector?selector:{});
+  });
+  Meteor.publish("archivo", function (selector) {
+    return ArchivoCollection.find(selector?selector:{});
   });
   Meteor.onConnection(function (connection) {
     OnlineCollection.insert({
