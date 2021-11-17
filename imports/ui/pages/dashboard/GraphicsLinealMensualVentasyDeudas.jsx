@@ -13,7 +13,7 @@ import {
   Zoom,
   IconButton,
 } from "@material-ui/core";
-import Paper from '@mui/material/Paper';
+import Paper from '@material-ui/core/Paper';
 import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
 import { useTracker } from "meteor/react-meteor-data";
@@ -27,7 +27,7 @@ import PermContactCalendarRoundedIcon from "@material-ui/icons/PermContactCalend
 import MailIcon from "@material-ui/icons/Mail";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import AnyChart from "anychart-react";
-import Chip from '@mui/material/Chip';
+import Chip from '@material-ui/core/Chip';
 
 import moment from 'moment';
 

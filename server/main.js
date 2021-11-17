@@ -11,7 +11,7 @@ import bodyParser from "body-parser";
 import router from "router";
 import fs from "fs";
 
-var cron = require("node-cron");
+// var cron = require("node-cron");
 const endpoint = router();
 
 function insertLink({ title, url }) {

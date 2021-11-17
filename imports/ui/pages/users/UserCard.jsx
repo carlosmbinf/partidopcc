@@ -1,8 +1,5 @@
 import React from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { Paper, Box, Grid, Icon, Divider, Zoom, Slide } from "@material-ui/core";
@@ -15,10 +12,8 @@ import { Link } from "react-router-dom";
 import Fade from 'react-reveal/Fade';
 import Carousel from "../../components/carousel/Carousel";
 //icons
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import AddCircleRoundedIcon from "@material-ui/icons/AddCircleRounded";
-import PermContactCalendarRoundedIcon from "@material-ui/icons/PermContactCalendarRounded";
-import DataSaverOnIcon from '@mui/icons-material/DataSaverOn';
+import MailOutlineOutlinedIcon from '@material-ui/icons/MailOutlineOutlined';
 
 const StyledBadge = withStyles((theme) => ({
   badge: {
@@ -198,7 +193,7 @@ export default function UserCard(withAdd) {
                     <Grid item xs={12}>
                       <Grid container direction="row">
                         <Grid item xs={12}>
-                          <DataSaverOnIcon />
+                          <MailOutlineOutlinedIcon />
                         <Typography color="textSecondary" noWrap>
                           <strong>
                             {usersGeneral.emails[0].address}
